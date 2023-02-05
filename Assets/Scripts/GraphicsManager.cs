@@ -3,14 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[System.Serializable]
+public struct TileAssets
+{
+    public Tile grass;
+    public Tile dirt;
+    public Tile mud;
+    public Tile water;
+}
+
+[System.Serializable]
+public struct ElementsAssets
+{
+    [Header("Nature")]
+    public GameObject mainTree;
+    public GameObject energyTree;
+    public GameObject waterTree;
+    public GameObject destructionTree;
+    public GameObject poisonTree;
+    public GameObject root;
+    [Header("Human")]
+    public GameObject humanBuilding;
+}
+
 public class GraphicsManager : MonoBehaviour
 {
-    [SerializeField] private GameObject cellPrefab;
     [SerializeField] private Tilemap tilemap;
-
-    public Tile temp_tile;
-
-    
+    [SerializeField] private TileAssets tileAssets;
+    [SerializeField] private ElementsAssets elementsAssets;    
 
     public void SpawnGridTiles(DataGrid dataGrid)
     {
@@ -21,13 +41,28 @@ public class GraphicsManager : MonoBehaviour
     void SpawnTile(DataCell cell, int i, int j)
     {
         Vector3Int pos = new Vector3Int(i, j, 0);
+        Tile tileToPlace;
 
-        tilemap.SetTile(pos, temp_tile);
+        if(cell.Resources.water > cell.Resources.organicMatter)
+        {
+            tileToPlace = tileAssets.water;
+        }
+        else if(cell.Resources.water == cell.Resources.organicMatter)
+        {
+            tileToPlace = tileAssets.mud;
+        }
+        else if(cell.Resources.organicMatter == 0)
+        {
+            tileToPlace = tileAssets.dirt;
+        }
+        else
+        {
+            tileToPlace = tileAssets.grass;
+        }
 
-        Color col = new Color(cell.Resources.insolation, cell.Resources.organicMatter, cell.Resources.water);
-        tilemap.SetColor(pos, col);
+        tilemap.SetTile(pos, tileToPlace);
 
-        //GameObject clone = Instantiate(cellPrefab, pos, cellPrefab.transform.rotation, transform);
-        //clone.GetComponent<Renderer>().material.color = ;
+        //Color col = new Color(cell.Resources.insolation, cell.Resources.organicMatter, cell.Resources.water);
+        //tilemap.SetColor(pos, col);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CellElement : MonoBehaviour
+public class DataCellElement
 {
     // Start is called before the first frame update
     void Start()

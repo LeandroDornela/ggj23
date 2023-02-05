@@ -12,6 +12,12 @@ public class GameManager : MonoBehaviour
     private GraphicsManager graphicsManager;
 
 
+    public DataCell GetDataOfCell(int i, int j)
+    {
+        return grid.GetDataOfCell(i, j);
+    }
+
+
     private void Awake()
     {
         if(graphicsManager == null)

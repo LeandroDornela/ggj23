@@ -44,6 +44,12 @@ public class DataGrid
     }
 
 
+    public DataCell GetDataOfCell(int i, int j)
+    {
+        return dataCells[i, j];
+    }
+
+
     public void UpdateGrid()
     {
         ForEachCell(UpdateCell);
