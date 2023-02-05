@@ -53,7 +53,7 @@ public class InputManager : MonoBehaviour
                                  Mathf.RoundToInt(hit.point.y),
                                  Mathf.RoundToInt(hit.point.z));
 
-            if(pos != currentMouseGridPos)
+            if(pos != currentMouseGridPos && gameManager.Grid.IsPositionValid(pos.x, pos.z))
             {
                 currentMouseGridPos = pos;
 
@@ -72,7 +72,7 @@ public class InputManager : MonoBehaviour
 
     void DebugText()
     {
-        DataCell currentCell = gameManager.GetDataOfCell(currentMouseGridPos.x, currentMouseGridPos.z);
+        DataCell currentCell = gameManager.Grid.GetDataOfCell(currentMouseGridPos.x, currentMouseGridPos.z);
         debugText.text = $"Sol: {currentCell.Resources.insolation}\nMateria Organica: {currentCell.Resources.organicMatter}\nAgua: {currentCell.Resources.water}";
         transform.position = currentMouseGridPos;
     }

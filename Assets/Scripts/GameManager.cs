@@ -8,13 +8,35 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Texture2D elementsDefinition;
 
     private DataGrid grid;
-
     private GraphicsManager graphicsManager;
+    private bool isBusy = false;
 
 
-    public DataCell GetDataOfCell(int i, int j)
+    public DataGrid Grid { get { return grid; } }
+    public bool IsBusy { get { return isBusy; } }
+
+
+    public void ButtonNextTurn()
     {
-        return grid.GetDataOfCell(i, j);
+        StartCoroutine(NextTurn());
+    }
+
+
+    public void ButtonSelectBuilding(int id)
+    {
+
+    }
+
+
+    IEnumerator NextTurn()
+    {
+        isBusy = true;
+
+        Debug.Log("Next Turn");
+
+        yield return new WaitForSeconds(1);
+
+        isBusy = false;
     }
 
 

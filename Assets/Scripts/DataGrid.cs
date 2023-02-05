@@ -50,6 +50,19 @@ public class DataGrid
     }
 
 
+    public bool IsPositionValid(int i, int j)
+    {
+        if(i < 0 || j < 0 || i >= dataCells.GetLength(1) || j >= dataCells.GetLength(0))
+        {
+            Debug.Log($"{i} {j}");
+            return false;
+        }
+
+        Debug.Log($"{i} {j}");
+        return true;
+    }
+
+
     public void UpdateGrid()
     {
         ForEachCell(UpdateCell);
