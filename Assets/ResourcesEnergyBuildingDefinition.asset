@@ -15,6 +15,7 @@ MonoBehaviour:
   elementName: Energy Generator
   elementDescription: 
   graphicsPrefab: {fileID: 0}
+  definitionColor: {r: 1, g: 1, b: 1, a: 1}
   cellElementCategory: 1
   conditionToPlaceElement: 0
   waterCost: 1

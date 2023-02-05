@@ -18,7 +18,7 @@ public class GridData
     /// </summary>
     /// <param name="cellsDefinition">Definição de cada celula atravez de informação de cor.</param>
     /// <param name="elementsDifinition">Definição de elementos pre spawnados em cada celula.</param>
-    public GridData(Texture2D cellsDefinition, Texture2D elementsDifinition)
+    public GridData(Texture2D cellsDefinition, Texture2D elementsDifinition, CellElementDefinition[] buildableElementsDefinitions, CellElementDefinition[] generalElementsDefinitions)
     {
         dataCells = new CellData[cellsDefinition.width, cellsDefinition.height];
 
@@ -26,8 +26,36 @@ public class GridData
         {
             for (int j = 0; j < dataCells.GetLength(1); j++)
             {
+                // set das celulas da grade.
                 Color data = cellsDefinition.GetPixel(i, j);
                 dataCells[i, j] = new CellData(new DataCellResources(data.r, data.g, data.b), i, j);
+
+
+                // Set dos elementos presentes inicioalmente nas celulas.
+                data = elementsDifinition.GetPixel(i, j);
+
+                // No definition for this cell.
+                if(data == Color.black)
+                {
+                    continue;
+                }
+
+                for(int k = 0; k < buildableElementsDefinitions.Length; k++)
+                {
+                    if (buildableElementsDefinitions[k].definitionColor == data)
+                    {
+                        SetCellElement(buildableElementsDefinitions[k], i, j);
+                        break;
+                    }
+                }
+                for (int k = 0; k < generalElementsDefinitions.Length; k++)
+                {
+                    if (generalElementsDefinitions[k].definitionColor == data)
+                    {
+                        SetCellElement(generalElementsDefinitions[k], i, j);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -61,14 +89,19 @@ public class GridData
     }
 
 
-    public bool SetCellElement(CellElementData elementData, int i, int j)
+    public bool SetCellElement(CellElementDefinition elementDefinition, int i, int j)
     {
         if(!IsPositionValid(i, j))
         {
             return false;
         }
-        dataCells[i, j].RemoveElementSafe(elementData.Definition.cellElementCategory);
-        return dataCells[i, j].AddElementSafe(elementData);
+
+        Debug.Log($"<color=green>Adding Cell element {elementDefinition.elementName} to ({i}, {j}) </color>");
+
+        CellElementData data = new CellElementData(elementDefinition);
+
+        dataCells[i, j].RemoveElementSafe(data.Definition.cellElementCategory);
+        return dataCells[i, j].AddElementSafe(data);
     }
 
 
@@ -94,6 +127,53 @@ public class GridData
         }
 
         return neighbors;
+    }
+
+
+    public bool VerifyCondition(ConditionToPlaceElement condition, int i, int j)
+    {
+        switch (condition)
+        {
+            case ConditionToPlaceElement.none:
+                return true;
+            case ConditionToPlaceElement.hasRootOnTile:
+                if (GetDataOfCell(i, j).UndergroundHasElementOfType<RootElementDefinition>())
+                {
+                    return true;
+                }
+                break;
+            case ConditionToPlaceElement.hasOnlyNeighborRoot:
+                if (GetDataOfCell(i, j).UndergroundHasElementOfType<RootElementDefinition>())
+                {
+                    return false;
+                }
+                else
+                {
+                    List<CellData> cells = GetNeighbors(i, j);
+                    for (int k = 0; k < cells.Count; k++)
+                    {
+                        if (cells[k].UndergroundHasElementOfType<RootElementDefinition>())
+                        {
+                            return true;
+                        }
+                    }
+                }
+                break;
+            case ConditionToPlaceElement.mainGroundFree:
+                if (GetDataOfCell(i, j).Elements.mainGroundElement == null) return true;
+                return false;
+            case ConditionToPlaceElement.secondaryGroundFree:
+                if (GetDataOfCell(i, j).Elements.secondaryGroundElement == null) return true;
+                return false;
+            case ConditionToPlaceElement.airFree:
+                if (GetDataOfCell(i, j).Elements.airElement == null) return true;
+                return false;
+            case ConditionToPlaceElement.undergroundFree:
+                if (GetDataOfCell(i, j).Elements.undergroundElement == null) return true;
+                return false;
+        }
+
+        return false;
     }
 
 

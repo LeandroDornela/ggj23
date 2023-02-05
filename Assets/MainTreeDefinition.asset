@@ -9,17 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab3f73e2b51581348a46e3538a4b6e83, type: 3}
-  m_Name: ResourcesWaterBuildingDefinition
+  m_Script: {fileID: 11500000, guid: 5c27e2405a3e7bc49b685021c26d6778, type: 3}
+  m_Name: MainTreeDefinition
   m_EditorClassIdentifier: 
-  elementName: Water Generator
+  elementName: 
   elementDescription: 
   graphicsPrefab: {fileID: 0}
-  definitionColor: {r: 1, g: 1, b: 1, a: 1}
-  cellElementCategory: 1
+  definitionColor: {r: 0, g: 0, b: 0, a: 0}
+  cellElementCategory: 0
   conditionToPlaceElement: 0
-  waterCost: 1
-  energyCost: 1
-  hp: 100
-  resourceProduction: 0
-  resourceGenerationMultiplier: 2
+  hp: 0

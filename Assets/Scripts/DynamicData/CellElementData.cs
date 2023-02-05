@@ -11,6 +11,13 @@ public class CellElementData
     public CellElementDefinition Definition { get { return definition; } }
     public ElementGraphics GraphicsInstance { get { return ghaphicsInstance; } }
 
+
+    public CellElementData(CellElementDefinition definition)
+    {
+        this.definition = definition;
+    }
+
+
     public void UpdateElement()
     {
 

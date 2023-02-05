@@ -8,6 +8,7 @@ public class CellElementDefinition : ScriptableObject
     public string elementName;
     [TextArea] public string elementDescription;
     public ElementGraphics graphicsPrefab;
+    public Color definitionColor;
     public CellElementCategory cellElementCategory;
     public ConditionToPlaceElement conditionToPlaceElement;
 }

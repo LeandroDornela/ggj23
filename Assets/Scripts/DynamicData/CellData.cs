@@ -145,7 +145,7 @@ public class CellData
 
 
     /// <summary>
-    /// Use apenas typos derivados de CellElementData.
+    /// Use apenas typos derivados de CellElementDefinition.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
@@ -153,7 +153,7 @@ public class CellData
     {
         if (elements.undergroundElement == null) return false;
 
-        if (elements.undergroundElement.GetType() == typeof(T))
+        if (elements.undergroundElement.Definition.GetType() == typeof(T))
         {
             return true;
         }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 
 public class GameManager : MonoBehaviour
@@ -11,7 +12,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Texture2D elementsDefinition;
 
     [Header("Elements Definition")]
-    [NaughtyAttributes.Expandable][SerializeField] private CellElementDefinition[] buildingsDefinitions;
+    [NaughtyAttributes.Expandable][SerializeField] private CellElementDefinition[] buildableElementsDefinitions;
+    [NaughtyAttributes.Expandable][SerializeField] private CellElementDefinition[] generalElementsDefinitions;
 
     [Header("Scene References")]
     [SerializeField] private TMP_Text turnCounterText;
@@ -98,9 +100,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void InitializeDataGrid()
     {
-        grid = new GridData(cellsDefinition, elementsDefinition);
+        grid = new GridData(cellsDefinition, elementsDefinition, buildableElementsDefinitions, generalElementsDefinitions);
 
-        grid.SetCellElement(new RootElementData((RootElementDefinition)buildingsDefinitions[0]), 0, 0);
+        grid.SetCellElement(buildableElementsDefinitions[0], 0, 0);
     }
 
 
@@ -132,15 +134,19 @@ public class GameManager : MonoBehaviour
     {
         if (selectedBuilding < 0) return;
 
-        var buildingDef = buildingsDefinitions[selectedBuilding];
+        TryPlaceBuildableElement(buildableElementsDefinitions[selectedBuilding], pos.x, pos.z);
+    }
 
+
+    void TryPlaceBuildableElement(CellElementDefinition buildingDef, int i, int j)
+    {
         switch (buildingDef)
         {
             case RootElementDefinition:
                 RootElementDefinition cast = (RootElementDefinition)buildingDef;
-                if (HaveEnoughResources(cast.waterCost, cast.energyCost) && ConditionIsMeet(cast.conditionToPlaceElement, pos.x, pos.z))
+                if (HaveEnoughResources(cast.waterCost, cast.energyCost) && grid.VerifyCondition(cast.conditionToPlaceElement, i, j))
                 {
-                    grid.SetCellElement(new RootElementData(cast), pos.x, pos.z);
+                    grid.SetCellElement(cast, i,j);
                     ConsumeResource(ref resourceWater, cast.waterCost);
                     ConsumeResource(ref resourceEnergy, cast.energyCost);
                     break;
@@ -153,39 +159,6 @@ public class GameManager : MonoBehaviour
             case DemolisherBuildingDefinition:
                 break;
         }
-    }
-
-
-    bool ConditionIsMeet(ConditionToPlaceElement condition, int i, int j)
-    {
-        switch(condition)
-        {
-            case ConditionToPlaceElement.hasRootOnTile:
-                if(Grid.GetDataOfCell(i, j).UndergroundHasElementOfType<RootElementData>())
-                {
-                    return true;
-                }
-                break;
-            case ConditionToPlaceElement.hasOnlyNeighborRoot:
-                if (Grid.GetDataOfCell(i, j).UndergroundHasElementOfType<RootElementData>())
-                {
-                    return false;
-                }
-                else
-                {
-                    List<CellData> cells = Grid.GetNeighbors(i, j);
-                    for(int k = 0; k < cells.Count; k++)
-                    {
-                        if (cells[k].UndergroundHasElementOfType<RootElementData>())
-                        {
-                            return true;
-                        }
-                    }
-                }
-                break;
-        }
-
-        return false;
     }
 
 

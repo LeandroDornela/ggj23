@@ -17,7 +17,16 @@ public enum CellElementCategory
 
 public enum ConditionToPlaceElement
 {
+    none,
     hasRootOnTile,
-    hasOnlyNeighborRoot
+    hasOnlyNeighborRoot,
+    mainGroundFree,
+    secondaryGroundFree,
+    airFree,
+    undergroundFree
 }
+#endregion
+
+#region Structs
+
 #endregion

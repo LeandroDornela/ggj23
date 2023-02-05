@@ -16,8 +16,9 @@ MonoBehaviour:
   elementDescription: 
   graphicsPrefab: {fileID: 5831869576668517833, guid: 41fd6f07646ddc441b2710f8cc809fd0,
     type: 3}
+  definitionColor: {r: 0, g: 1, b: 0, a: 1}
   cellElementCategory: 3
-  conditionToPlaceElement: 0
-  waterCost: 0
+  conditionToPlaceElement: 1
+  waterCost: 1
   energyCost: 0
   hp: 100
