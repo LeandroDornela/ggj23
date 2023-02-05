@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum Resource
-{
-    water,
-    energy
-}
-
-
 [CreateAssetMenu(fileName = "ResourcesBuildingDefinition", menuName = "Scriptable Objects/Resources Building Definition")]
 public class ResourceBuildingDefinition : CellElementDefinition
 {

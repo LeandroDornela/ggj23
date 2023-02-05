@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Water Generator
   elementDescription: 
-  assetID: 3
+  graphicsPrefab: {fileID: 0}
+  cellElementCategory: 1
+  conditionToPlaceElement: 0
   waterCost: 1
   energyCost: 1
   hp: 100

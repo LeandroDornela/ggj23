@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Root
   elementDescription: 
-  assetID: 0
+  graphicsPrefab: {fileID: 5831869576668517833, guid: 41fd6f07646ddc441b2710f8cc809fd0,
+    type: 3}
+  cellElementCategory: 3
+  conditionToPlaceElement: 0
   waterCost: 0
   energyCost: 0
   hp: 100

@@ -7,5 +7,7 @@ public class CellElementDefinition : ScriptableObject
 {
     public string elementName;
     [TextArea] public string elementDescription;
-    public int assetID;
+    public ElementGraphics graphicsPrefab;
+    public CellElementCategory cellElementCategory;
+    public ConditionToPlaceElement conditionToPlaceElement;
 }

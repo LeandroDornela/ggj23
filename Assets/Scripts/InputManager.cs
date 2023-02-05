@@ -65,6 +65,19 @@ public class InputManager : MonoBehaviour
             Debug.DrawLine(hit.point, hit.point + Vector3.up * 3, Color.gray);
             Debug.DrawLine(pos, hit.point + Vector3.up * 3, Color.green);
 
+            if(gameManager.Grid.IsPositionValid(pos.x, pos.z))
+            {
+                if (gameManager.Grid.GetDataOfCell(pos.x, pos.y).UndergroundHasElementOfType<RootElementData>()) { Debug.Log("has root"); }
+
+                List<CellData> cells = gameManager.Grid.GetNeighbors(pos.x, pos.z);
+                
+                for(int i = 0; i < cells.Count; i++)
+                {
+                    Debug.DrawLine(new Vector3(cells[i].Position.x, 0, cells[i].Position.y), new Vector3(cells[i].Position.x, 0, cells[i].Position.y) + Vector3.up * 2, Color.red);
+                }
+            }
+
+            
 #endif
         }
     }

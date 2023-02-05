@@ -99,13 +99,18 @@ public class GameManager : MonoBehaviour
     void InitializeDataGrid()
     {
         grid = new GridData(cellsDefinition, elementsDefinition);
+
+        grid.SetCellElement(new RootElementData((RootElementDefinition)buildingsDefinitions[0]), 0, 0);
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        CustonEvents.Instance.OnClickGridCell.AddListener(OnClickCell);
+
+        resourceWater = 10;
+        resourceEnergy = 10;
     }
 
 
@@ -116,6 +121,92 @@ public class GameManager : MonoBehaviour
         {
             UnselectBuilding();
         }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pos"></param>
+    void OnClickCell(Vector3Int pos)
+    {
+        if (selectedBuilding < 0) return;
+
+        var buildingDef = buildingsDefinitions[selectedBuilding];
+
+        switch (buildingDef)
+        {
+            case RootElementDefinition:
+                RootElementDefinition cast = (RootElementDefinition)buildingDef;
+                if (HaveEnoughResources(cast.waterCost, cast.energyCost) && ConditionIsMeet(cast.conditionToPlaceElement, pos.x, pos.z))
+                {
+                    grid.SetCellElement(new RootElementData(cast), pos.x, pos.z);
+                    ConsumeResource(ref resourceWater, cast.waterCost);
+                    ConsumeResource(ref resourceEnergy, cast.energyCost);
+                    break;
+                }
+                break;
+            case ResourceBuildingDefinition:
+                break;
+            case PoisonBuildingDefinition:
+                break;
+            case DemolisherBuildingDefinition:
+                break;
+        }
+    }
+
+
+    bool ConditionIsMeet(ConditionToPlaceElement condition, int i, int j)
+    {
+        switch(condition)
+        {
+            case ConditionToPlaceElement.hasRootOnTile:
+                if(Grid.GetDataOfCell(i, j).UndergroundHasElementOfType<RootElementData>())
+                {
+                    return true;
+                }
+                break;
+            case ConditionToPlaceElement.hasOnlyNeighborRoot:
+                if (Grid.GetDataOfCell(i, j).UndergroundHasElementOfType<RootElementData>())
+                {
+                    return false;
+                }
+                else
+                {
+                    List<CellData> cells = Grid.GetNeighbors(i, j);
+                    for(int k = 0; k < cells.Count; k++)
+                    {
+                        if (cells[k].UndergroundHasElementOfType<RootElementData>())
+                        {
+                            return true;
+                        }
+                    }
+                }
+                break;
+        }
+
+        return false;
+    }
+
+
+    bool HaveEnoughResources(int waterCost, int energyCost)
+    {
+        if(waterCost <= resourceWater && energyCost <= resourceEnergy)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    void ReceiveResource(ref int resource, int amount)
+    {
+        resource += amount;
+    }
+
+    void ConsumeResource(ref int resource, int amount)
+    {
+        resource -= amount;
     }
 
 
