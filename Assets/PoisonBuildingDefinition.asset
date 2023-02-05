@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Poisoner
   elementDescription: 
-  graphicsPrefab: {fileID: 0}
+  graphicsPrefab: {fileID: 4543453492220484986, guid: 979c0999658a9104fa18180334e1b819,
+    type: 3}
   definitionColor: {r: 1, g: 1, b: 1, a: 1}
   cellElementCategory: 1
-  conditionToPlaceElement: 0
+  conditionToPlaceElement: 1
+  secondaryConditionToPlaceElement: 3
   waterCost: 1
   energyCost: 1
   hp: 100

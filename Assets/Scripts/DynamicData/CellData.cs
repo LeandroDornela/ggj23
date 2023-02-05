@@ -35,6 +35,14 @@ public struct DataCellElements
         this.secondaryGroundElement = secondaryGroundElement;
         this.undergroundElement = undergroundElement;
     }
+
+    public void UpdateElements(CellData cell)
+    {
+        airElement?.UpdateElement(cell);
+        mainGroundElement?.UpdateElement(cell);
+        secondaryGroundElement?.UpdateElement(cell);
+        undergroundElement?.UpdateElement(cell);
+    }
 }
 
 
@@ -47,6 +55,7 @@ public class CellData
     private DataCellResources resources;
     private DataCellElements elements;
     private Vector2Int position;
+    private List<MobileUnit> mobileUnits;
 
 
     public Vector2Int Position { get { return position; } }
@@ -58,6 +67,8 @@ public class CellData
         this.resources = resources;
         position.x = i;
         position.y = j;
+
+        mobileUnits = new List<MobileUnit>();
     }
 
 
@@ -66,48 +77,30 @@ public class CellData
         switch(categoty)
         {
             case CellElementCategory.air:
-                if (elements.airElement == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    elements.airElement = null;
-                    return true;
-                }
+                return RemoveDefinedCatElement(ref elements.airElement);
             case CellElementCategory.mainGround:
-                if (elements.mainGroundElement == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    elements.mainGroundElement = null;
-                    return true;
-                }
+                return RemoveDefinedCatElement(ref elements.mainGroundElement);
             case CellElementCategory.secondaryGround:
-                if (elements.secondaryGroundElement == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    elements.secondaryGroundElement = null;
-                    return true;
-                }
+                return RemoveDefinedCatElement(ref elements.secondaryGroundElement);
             case CellElementCategory.underground:
-                if (elements.undergroundElement == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    elements.undergroundElement = null;
-                    return true;
-                }
+                return RemoveDefinedCatElement(ref elements.undergroundElement);
         }
 
         return false;
+    }
+
+    bool RemoveDefinedCatElement(ref CellElementData elementDataProperty)
+    {
+        if (elementDataProperty == null)
+        {
+            return false;
+        }
+        else
+        {
+            elementDataProperty.RemovedFromCell(this);
+            elementDataProperty = null;
+            return true;
+        }
     }
 
 
@@ -134,7 +127,7 @@ public class CellData
         if (elementDataProperty == null)
         {
             elementDataProperty = newData;
-            elementDataProperty.InstantiateGraphics(new Vector3(position.x, 0, position.y));
+            elementDataProperty.AddedToCell(this);
             return true;
         }
         else
@@ -163,6 +156,34 @@ public class CellData
 
     public void UpdateCell()
     {
-        
+        elements.UpdateElements(this);
+
+        for (int i = 0; i < mobileUnits.Count; i++)
+        {
+            mobileUnits[i].TurnUpdate();
+        }
+    }
+
+
+    public void ApplyDamageToMobileUnits(int damage)
+    {
+        for(int i = 0; i < mobileUnits.Count; i++)
+        {
+            mobileUnits[i].ReceiveDamage(damage);
+        }
+    }
+
+
+    public void RemoveMobileUnit(MobileUnit unit)
+    {
+        mobileUnits.Remove(unit);
+        unit.CurrentCell = null;
+    }
+
+
+    public void AddMobileUnit(MobileUnit unit)
+    {
+        mobileUnits.Add(unit);
+        unit.CurrentCell = this;
     }
 }

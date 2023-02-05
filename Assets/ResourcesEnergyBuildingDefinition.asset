@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Energy Generator
   elementDescription: 
-  graphicsPrefab: {fileID: 0}
+  graphicsPrefab: {fileID: 6104124286652993100, guid: 9a047a34efa3feb4b8f8b1ed436aedb9,
+    type: 3}
   definitionColor: {r: 1, g: 1, b: 1, a: 1}
   cellElementCategory: 1
-  conditionToPlaceElement: 0
+  conditionToPlaceElement: 1
+  secondaryConditionToPlaceElement: 3
   waterCost: 1
   energyCost: 1
   hp: 100
   resourceProduction: 1
-  resourceGenerationMultiplier: 2
+  resourceAmount: 5
+  produceResouceOnSpawn: 0
+  produceResouceAllTurns: 1

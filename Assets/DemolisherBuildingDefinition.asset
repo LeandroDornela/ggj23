@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Demolisher
   elementDescription: 
-  graphicsPrefab: {fileID: 0}
+  graphicsPrefab: {fileID: 1672403580974902031, guid: 1d6b36dc40b0ec145921655c29d87d88,
+    type: 3}
   definitionColor: {r: 1, g: 1, b: 1, a: 1}
   cellElementCategory: 1
-  conditionToPlaceElement: 0
+  conditionToPlaceElement: 1
+  secondaryConditionToPlaceElement: 3
   waterCost: 1
   energyCost: 1
   hp: 100

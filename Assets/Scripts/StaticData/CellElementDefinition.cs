@@ -11,4 +11,9 @@ public class CellElementDefinition : ScriptableObject
     public Color definitionColor;
     public CellElementCategory cellElementCategory;
     public ConditionToPlaceElement conditionToPlaceElement;
+    public ConditionToPlaceElement secondaryConditionToPlaceElement;
+
+    public virtual void OnAddedToCell(CellData cell, CellElementData element) { }
+    public virtual void OnRemovedFromCell(CellData cell, CellElementData element) { }
+    public virtual void OnTurnUpdate(CellData cell, CellElementData element) { }
 }

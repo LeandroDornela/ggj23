@@ -12,6 +12,8 @@ public class GridData
 {
     private CellData[,] dataCells;
 
+    public static GridData Instance;
+
 
     /// <summary>
     /// 
@@ -20,6 +22,8 @@ public class GridData
     /// <param name="elementsDifinition">Definição de elementos pre spawnados em cada celula.</param>
     public GridData(Texture2D cellsDefinition, Texture2D elementsDifinition, CellElementDefinition[] buildableElementsDefinitions, CellElementDefinition[] generalElementsDefinitions)
     {
+        Instance = this;
+
         dataCells = new CellData[cellsDefinition.width, cellsDefinition.height];
 
         for (int i = 0; i < dataCells.GetLength(0); i++)
@@ -105,25 +109,25 @@ public class GridData
     }
 
 
-    public List<CellData> GetNeighbors(int i, int j)
+    public static List<CellData> GetNeighbors(int i, int j)
     {
         List<CellData> neighbors = new List<CellData>();
 
         if (i > 0)
         {
-            neighbors.Add(dataCells[i - 1,j]);
+            neighbors.Add(Instance.dataCells[i - 1,j]);
         }
-        if(i < dataCells.GetLength(1) - 1)
+        if(i < Instance.dataCells.GetLength(1) - 1)
         {
-            neighbors.Add(dataCells[i + 1, j]);
+            neighbors.Add(Instance.dataCells[i + 1, j]);
         }
         if(j > 0)
         {
-            neighbors.Add(dataCells[i, j - 1]);
+            neighbors.Add(Instance.dataCells[i, j - 1]);
         }
-        if(j < dataCells.GetLength(0) - 1)
+        if(j < Instance.dataCells.GetLength(0) - 1)
         {
-            neighbors.Add(dataCells[i, j + 1]);
+            neighbors.Add(Instance.dataCells[i, j + 1]);
         }
 
         return neighbors;

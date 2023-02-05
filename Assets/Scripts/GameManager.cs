@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -27,13 +28,18 @@ public class GameManager : MonoBehaviour
 
     [NaughtyAttributes.ReadOnly][SerializeField] private bool isBusy = false;
     [NaughtyAttributes.ReadOnly][SerializeField] private int turnCounter = 0;
-    [NaughtyAttributes.ReadOnly][SerializeField] private int selectedBuilding = -1;
-    [NaughtyAttributes.ReadOnly][SerializeField] private int resourceWater = 0;
-    [NaughtyAttributes.ReadOnly][SerializeField] private int resourceEnergy = 0;
+    [SerializeField] private int selectedBuilding = -1;
+    [SerializeField] private int resourceWater = 0;
+    [SerializeField] private int resourceEnergy = 0;
+
+    public MobileUnit test;
 
 
     public GridData Grid { get { return grid; } }
     public bool IsBusy { get { return isBusy; } }
+
+
+    public static GameManager Instance;
 
 
     /// <summary>
@@ -69,6 +75,8 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Next Turn");
 
+        grid.UpdateGrid();
+
         yield return new WaitForSeconds(1);
 
         isBusy = false;
@@ -80,6 +88,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        Instance = this;
+
         if(graphicsManager == null)
         {
             graphicsManager = FindObjectOfType<GraphicsManager>();
@@ -102,7 +112,7 @@ public class GameManager : MonoBehaviour
     {
         grid = new GridData(cellsDefinition, elementsDefinition, buildableElementsDefinitions, generalElementsDefinitions);
 
-        grid.SetCellElement(buildableElementsDefinitions[0], 0, 0);
+        grid.GetDataOfCell(0, 0).AddMobileUnit(Instantiate(test));
     }
 
 
@@ -110,9 +120,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         CustonEvents.Instance.OnClickGridCell.AddListener(OnClickCell);
-
-        resourceWater = 10;
-        resourceEnergy = 10;
     }
 
 
@@ -132,14 +139,29 @@ public class GameManager : MonoBehaviour
     /// <param name="pos"></param>
     void OnClickCell(Vector3Int pos)
     {
+        if (isBusy) return;
+
         if (selectedBuilding < 0) return;
 
-        TryPlaceBuildableElement(buildableElementsDefinitions[selectedBuilding], pos.x, pos.z);
+        TryPlaceBuildableElement((BuildableElementDefinition)buildableElementsDefinitions[selectedBuilding], pos.x, pos.z);
     }
 
 
-    void TryPlaceBuildableElement(CellElementDefinition buildingDef, int i, int j)
+    bool TryPlaceBuildableElement(BuildableElementDefinition buildingDef, int i, int j)
     {
+        if (HaveEnoughResources(buildingDef.waterCost, buildingDef.energyCost) &&
+            grid.VerifyCondition(buildingDef.conditionToPlaceElement, i, j) &&
+            grid.VerifyCondition(buildingDef.secondaryConditionToPlaceElement, i, j))
+        {
+            grid.SetCellElement(buildingDef, i, j);
+            ConsumeResource(Resource.water, buildingDef.waterCost);
+            ConsumeResource(Resource.energy, buildingDef.energyCost);
+            return true;
+        }
+
+        return false;
+
+        /*
         switch (buildingDef)
         {
             case RootElementDefinition:
@@ -147,8 +169,8 @@ public class GameManager : MonoBehaviour
                 if (HaveEnoughResources(cast.waterCost, cast.energyCost) && grid.VerifyCondition(cast.conditionToPlaceElement, i, j))
                 {
                     grid.SetCellElement(cast, i,j);
-                    ConsumeResource(ref resourceWater, cast.waterCost);
-                    ConsumeResource(ref resourceEnergy, cast.energyCost);
+                    ConsumeWater(cast.waterCost);
+                    ConsumeEnergy(cast.energyCost);
                     break;
                 }
                 break;
@@ -159,6 +181,7 @@ public class GameManager : MonoBehaviour
             case DemolisherBuildingDefinition:
                 break;
         }
+        */
     }
 
 
@@ -172,14 +195,34 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    void ReceiveResource(ref int resource, int amount)
+
+    public static void AddResource(Resource resource, int amount)
     {
-        resource += amount;
+        if(resource == Resource.energy)
+        {
+            Instance.resourceEnergy += amount;
+            Instance.energyCounterText.text = Instance.resourceEnergy.ToString();
+        }
+        else if(resource == Resource.water)
+        {
+            Instance.resourceWater += amount;
+            Instance.waterCounterText.text = Instance.resourceWater.ToString();
+        }
     }
 
-    void ConsumeResource(ref int resource, int amount)
+
+    public static void ConsumeResource(Resource resource, int amount)
     {
-        resource -= amount;
+        if (resource == Resource.energy)
+        {
+            Instance.resourceEnergy -= amount;
+            Instance.energyCounterText.text = Instance.resourceEnergy.ToString();
+        }
+        else if (resource == Resource.water)
+        {
+            Instance.resourceWater -= amount;
+            Instance.waterCounterText.text = Instance.resourceWater.ToString();
+        }
     }
 
 

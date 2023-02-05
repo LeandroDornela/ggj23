@@ -18,7 +18,7 @@ MonoBehaviour:
     type: 3}
   definitionColor: {r: 0, g: 1, b: 0, a: 1}
   cellElementCategory: 3
-  conditionToPlaceElement: 1
+  conditionToPlaceElement: 2
   waterCost: 1
   energyCost: 0
   hp: 100

@@ -69,7 +69,7 @@ public class InputManager : MonoBehaviour
             {
                 //if (gameManager.Grid.GetDataOfCell(pos.x, pos.y).UndergroundHasElementOfType<RootElementDefinition>()) { Debug.Log("has root"); }
 
-                List<CellData> cells = gameManager.Grid.GetNeighbors(pos.x, pos.z);
+                List<CellData> cells = GridData.GetNeighbors(pos.x, pos.z);
                 
                 for(int i = 0; i < cells.Count; i++)
                 {

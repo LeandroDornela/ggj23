@@ -4,11 +4,37 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "ResourcesBuildingDefinition", menuName = "Scriptable Objects/Resources Building Definition")]
-public class ResourceBuildingDefinition : CellElementDefinition
+public class ResourceBuildingDefinition : BuildableElementDefinition
 {
-    public int waterCost;
-    public int energyCost;
-    public int hp;
     public Resource resourceProduction;
-    public int resourceGenerationMultiplier;
+    public int resourceAmount;
+    public bool produceResouceOnSpawn;
+    public bool produceResouceAllTurns;
+
+    public override void OnAddedToCell(CellData cell, CellElementData element)
+    {
+        base.OnAddedToCell(cell, element);
+
+        if(produceResouceOnSpawn)
+        {
+            GameManager.AddResource(resourceProduction, resourceAmount);
+        }
+    }
+
+
+    public override void OnTurnUpdate(CellData cell, CellElementData element)
+    {
+        base.OnTurnUpdate(cell, element);
+
+        if(produceResouceAllTurns)
+        {
+            GameManager.AddResource(resourceProduction, resourceAmount);
+        }
+    }
+
+
+    public override void OnRemovedFromCell(CellData cell, CellElementData element)
+    {
+        base.OnRemovedFromCell(cell, element);
+    }
 }
