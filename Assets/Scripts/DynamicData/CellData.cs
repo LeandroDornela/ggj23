@@ -19,15 +19,15 @@ public struct DataCellResources
 
 public struct DataCellElements
 {
-    public DataCellElement airElement;
-    public DataCellElement mainGroundElement;
-    public DataCellElement secondaryGroundElement;
-    public DataCellElement undergroundElement;
+    public CellElementData airElement;
+    public CellElementData mainGroundElement;
+    public CellElementData secondaryGroundElement;
+    public CellElementData undergroundElement;
 
-    public DataCellElements(DataCellElement airElement = null,
-                            DataCellElement mainGroundElement = null,
-                            DataCellElement secondaryGroundElement = null,
-                            DataCellElement undergroundElement = null)
+    public DataCellElements(CellElementData airElement = null,
+                            CellElementData mainGroundElement = null,
+                            CellElementData secondaryGroundElement = null,
+                            CellElementData undergroundElement = null)
     {
         this.airElement = airElement;
         this.mainGroundElement = mainGroundElement;
@@ -41,7 +41,7 @@ public struct DataCellElements
 /// Dados da celula.
 /// </summary>
 [System.Serializable]
-public class DataCell
+public class CellData
 {
     private DataCellResources resources;
     private DataCellElements elements;
@@ -50,7 +50,7 @@ public class DataCell
     public DataCellResources Resources { get { return resources; } }
     public DataCellElements Elements { get { return elements; } }
 
-    public DataCell(DataCellResources resources)
+    public CellData(DataCellResources resources)
     {
         this.resources = resources;
     }

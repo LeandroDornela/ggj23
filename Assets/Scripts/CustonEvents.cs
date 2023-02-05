@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-
+[System.Serializable]
 public class CustonEvent<T>
 {
     private List<Action<T>> listeners;
+
+    public UnityEvent onTrigger;
 
     public CustonEvent()
     {
@@ -24,6 +27,8 @@ public class CustonEvent<T>
         {
             listeners[i].Invoke(value);
         }
+
+        onTrigger.Invoke();
     }
 
     public void RemoveListener(Action<T> listenerToRemove)
@@ -32,9 +37,12 @@ public class CustonEvent<T>
     }
 }
 
+[System.Serializable]
 public class CustonEvent<T1,T2>
 {
     private List<Action<T1, T2>> listeners;
+
+    public UnityEvent onTrigger;
 
     public CustonEvent()
     {
@@ -52,6 +60,8 @@ public class CustonEvent<T1,T2>
         {
             listeners[i].Invoke(value1, value2);
         }
+
+        onTrigger.Invoke();
     }
 
     public void RemoveListener(Action<T1, T2> listenerToRemove)
@@ -67,6 +77,7 @@ public class CustonEvents : MonoBehaviour
 
     public CustonEvent<Vector3Int> OnNewMouseGridPosition = new CustonEvent<Vector3Int>();
     public CustonEvent<Vector3Int> OnClickGridCell = new CustonEvent<Vector3Int>();
+    public CustonEvent<int> OnNewTurn = new CustonEvent<int>();
 
     private void Awake()
     {

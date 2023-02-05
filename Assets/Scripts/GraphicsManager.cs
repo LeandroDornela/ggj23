@@ -32,13 +32,13 @@ public class GraphicsManager : MonoBehaviour
     [SerializeField] private TileAssets tileAssets;
     [SerializeField] private ElementsAssets elementsAssets;    
 
-    public void SpawnGridTiles(DataGrid dataGrid)
+    public void SpawnGridTiles(GridData dataGrid)
     {
         dataGrid.ForEachCell(SpawnTile);
     }
 
 
-    void SpawnTile(DataCell cell, int i, int j)
+    void SpawnTile(CellData cell, int i, int j)
     {
         Vector3Int pos = new Vector3Int(i, j, 0);
         Tile tileToPlace;

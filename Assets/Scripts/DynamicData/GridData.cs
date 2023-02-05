@@ -8,9 +8,9 @@ using UnityEngine;
 /// Grid para armazenamonto das celulas de dados.
 /// </summary>
 [System.Serializable]
-public class DataGrid
+public class GridData
 {
-    private DataCell[,] dataCells;
+    private CellData[,] dataCells;
 
 
     /// <summary>
@@ -18,21 +18,21 @@ public class DataGrid
     /// </summary>
     /// <param name="cellsDefinition">Definição de cada celula atravez de informação de cor.</param>
     /// <param name="elementsDifinition">Definição de elementos pre spawnados em cada celula.</param>
-    public DataGrid(Texture2D cellsDefinition, Texture2D elementsDifinition)
+    public GridData(Texture2D cellsDefinition, Texture2D elementsDifinition)
     {
-        dataCells = new DataCell[cellsDefinition.width, cellsDefinition.height];
+        dataCells = new CellData[cellsDefinition.width, cellsDefinition.height];
 
         for (int i = 0; i < dataCells.GetLength(0); i++)
         {
             for (int j = 0; j < dataCells.GetLength(1); j++)
             {
                 Color data = cellsDefinition.GetPixel(i, j);
-                dataCells[i, j] = new DataCell(new DataCellResources(data.r, data.g, data.b));
+                dataCells[i, j] = new CellData(new DataCellResources(data.r, data.g, data.b));
             }
         }
     }
 
-    public void ForEachCell(Action<DataCell, int, int> method)
+    public void ForEachCell(Action<CellData, int, int> method)
     {
         for (int i = 0; i < dataCells.GetLength(0); i++)
         {
@@ -44,7 +44,7 @@ public class DataGrid
     }
 
 
-    public DataCell GetDataOfCell(int i, int j)
+    public CellData GetDataOfCell(int i, int j)
     {
         return dataCells[i, j];
     }
@@ -54,11 +54,9 @@ public class DataGrid
     {
         if(i < 0 || j < 0 || i >= dataCells.GetLength(1) || j >= dataCells.GetLength(0))
         {
-            Debug.Log($"{i} {j}");
             return false;
         }
 
-        Debug.Log($"{i} {j}");
         return true;
     }
 
@@ -69,7 +67,7 @@ public class DataGrid
     }
 
 
-    void UpdateCell(DataCell dataCell, int i, int j)
+    void UpdateCell(CellData dataCell, int i, int j)
     {
         dataCell.UpdateCell();
     }

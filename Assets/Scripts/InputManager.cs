@@ -72,7 +72,7 @@ public class InputManager : MonoBehaviour
 
     void DebugText()
     {
-        DataCell currentCell = gameManager.Grid.GetDataOfCell(currentMouseGridPos.x, currentMouseGridPos.z);
+        CellData currentCell = gameManager.Grid.GetDataOfCell(currentMouseGridPos.x, currentMouseGridPos.z);
         debugText.text = $"Sol: {currentCell.Resources.insolation}\nMateria Organica: {currentCell.Resources.organicMatter}\nAgua: {currentCell.Resources.water}";
         transform.position = currentMouseGridPos;
     }
