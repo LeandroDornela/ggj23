@@ -53,7 +53,7 @@ public struct DataCellElements
 public class CellData
 {
     private DataCellResources resources;
-    private DataCellElements elements;
+    public DataCellElements elements;
     private Vector2Int position;
     private List<MobileUnit> mobileUnits;
 
@@ -170,6 +170,17 @@ public class CellData
         for(int i = 0; i < mobileUnits.Count; i++)
         {
             mobileUnits[i].ReceiveDamage(damage);
+        }
+    }
+
+
+    public void ApplyDamageToElement(ref CellElementData element, int amount)
+    {
+        element.ReceiveDamage(amount);
+
+        if(element.CurrentHP <= 0)
+        {
+            RemoveDefinedCatElement(ref element);
         }
     }
 

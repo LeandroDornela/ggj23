@@ -19,8 +19,8 @@ MonoBehaviour:
   definitionColor: {r: 1, g: 1, b: 1, a: 1}
   cellElementCategory: 1
   conditionToPlaceElement: 1
-  secondaryConditionToPlaceElement: 3
-  waterCost: 1
-  energyCost: 1
+  secondaryConditionToPlaceElement: 7
+  waterCost: 7
+  energyCost: 10
   hp: 100
   damageArea: 0

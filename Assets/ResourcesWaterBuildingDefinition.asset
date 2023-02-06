@@ -20,10 +20,10 @@ MonoBehaviour:
   cellElementCategory: 1
   conditionToPlaceElement: 1
   secondaryConditionToPlaceElement: 3
-  waterCost: 1
-  energyCost: 1
+  waterCost: 0
+  energyCost: 4
   hp: 100
   resourceProduction: 0
-  resourceAmount: 5
+  resourceAmount: 1
   produceResouceOnSpawn: 0
   produceResouceAllTurns: 1

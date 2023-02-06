@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DemolisherBuildingDefinition", menuName = "Scriptable Objects/Demolisher Building Definition")]
-public class DemolisherBuildingDefinition : BuildableElementDefinition
+
+[CreateAssetMenu(fileName = "HumanSpawnerDefinition", menuName = "Scriptable Objects/Human Spawner Definition")]
+public class HumanSpawnerDefinition : CellElementDefinition
 {
-    public int damageArea;
+    public int hp;
 
     public override void OnAddedToCell(CellData cell, CellElementData element)
     {
         base.OnAddedToCell(cell, element);
 
-        //cell.ApplyDamageToElement(ref cell.elements.mainGroundElement, 99999);
+        element.CurrentHP = hp;
     }
 
 

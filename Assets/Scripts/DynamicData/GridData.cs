@@ -175,6 +175,19 @@ public class GridData
             case ConditionToPlaceElement.undergroundFree:
                 if (GetDataOfCell(i, j).Elements.undergroundElement == null) return true;
                 return false;
+            case ConditionToPlaceElement.hasHumanBuilding:
+                if (GetDataOfCell(i, j).Elements.mainGroundElement == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    if(GetDataOfCell(i, j).Elements.mainGroundElement.Definition.GetType() == typeof(HumanSpawnerDefinition))
+                    {
+                        return true;
+                    }
+                    return false;
+                }
         }
 
         return false;

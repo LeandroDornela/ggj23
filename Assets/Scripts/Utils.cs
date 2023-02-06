@@ -23,7 +23,8 @@ public enum ConditionToPlaceElement
     mainGroundFree,
     secondaryGroundFree,
     airFree,
-    undergroundFree
+    undergroundFree,
+    hasHumanBuilding
 }
 #endregion
 

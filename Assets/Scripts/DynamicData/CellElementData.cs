@@ -32,6 +32,9 @@ public class CellElementData
 
     public void RemovedFromCell(CellData cell)
     {
+        Debug.Log($"<color=red>Destroing Cell Element {definition.elementName} {GraphicsInstance}</color>");
+
+        Object.Destroy(GraphicsInstance.gameObject);
         definition.OnRemovedFromCell(cell, this);
     }
 
@@ -39,6 +42,17 @@ public class CellElementData
     public void UpdateElement(CellData cell)
     {
         definition.OnTurnUpdate(cell, this);
+    }
+
+
+    public void ReceiveDamage(int amount)
+    {
+        CurrentHP -= amount;
+
+        if(CurrentHP < 0)
+        {
+            CurrentHP = 0;
+        }
     }
 
 

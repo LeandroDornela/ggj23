@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -20,7 +18,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text turnCounterText;
     [SerializeField] private TMP_Text waterCounterText;
     [SerializeField] private TMP_Text energyCounterText;
-    
+    [SerializeField] private GameObject victoryScreen;
+
     private GridData grid;
     private GraphicsManager graphicsManager;
 
@@ -32,7 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int resourceWater = 0;
     [SerializeField] private int resourceEnergy = 0;
 
-    public MobileUnit test;
+    //public MobileUnit test;
 
 
     public GridData Grid { get { return grid; } }
@@ -40,6 +39,8 @@ public class GameManager : MonoBehaviour
 
 
     public static GameManager Instance;
+
+    private bool win;
 
 
     /// <summary>
@@ -77,6 +78,8 @@ public class GameManager : MonoBehaviour
 
         grid.UpdateGrid();
 
+        StartVictoryVerification();
+
         yield return new WaitForSeconds(1);
 
         isBusy = false;
@@ -90,7 +93,7 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
 
-        if(graphicsManager == null)
+        if (graphicsManager == null)
         {
             graphicsManager = FindObjectOfType<GraphicsManager>();
         }
@@ -99,8 +102,8 @@ public class GameManager : MonoBehaviour
 
         graphicsManager.SpawnGridTiles(grid);
 
-        energyCounterText.text = "0";
-        waterCounterText.text = "0";
+        energyCounterText.text = resourceEnergy.ToString();
+        waterCounterText.text = resourceWater.ToString();
         turnCounterText.text = "0";
     }
 
@@ -112,7 +115,7 @@ public class GameManager : MonoBehaviour
     {
         grid = new GridData(cellsDefinition, elementsDefinition, buildableElementsDefinitions, generalElementsDefinitions);
 
-        grid.GetDataOfCell(0, 0).AddMobileUnit(Instantiate(test));
+        //grid.GetDataOfCell(0, 0).AddMobileUnit(Instantiate(test));
     }
 
 
@@ -126,7 +129,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             UnselectBuilding();
         }
@@ -187,7 +190,7 @@ public class GameManager : MonoBehaviour
 
     bool HaveEnoughResources(int waterCost, int energyCost)
     {
-        if(waterCost <= resourceWater && energyCost <= resourceEnergy)
+        if (waterCost <= resourceWater && energyCost <= resourceEnergy)
         {
             return true;
         }
@@ -198,12 +201,12 @@ public class GameManager : MonoBehaviour
 
     public static void AddResource(Resource resource, int amount)
     {
-        if(resource == Resource.energy)
+        if (resource == Resource.energy)
         {
             Instance.resourceEnergy += amount;
             Instance.energyCounterText.text = Instance.resourceEnergy.ToString();
         }
-        else if(resource == Resource.water)
+        else if (resource == Resource.water)
         {
             Instance.resourceWater += amount;
             Instance.waterCounterText.text = Instance.resourceWater.ToString();
@@ -222,6 +225,32 @@ public class GameManager : MonoBehaviour
         {
             Instance.resourceWater -= amount;
             Instance.waterCounterText.text = Instance.resourceWater.ToString();
+        }
+    }
+
+
+    public void StartVictoryVerification()
+    {
+        win = true;
+        grid.ForEachCell(VerifyVictory);
+        if (win)
+        {
+            victoryScreen.SetActive(true);
+        }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+    void VerifyVictory(CellData cell, int i, int j)
+    {
+        //Debug.Log($"{cell.elements.mainGroundElement?.GetType()}");
+        if (cell.elements.mainGroundElement?.Definition.elementName == "Human Building")
+        {
+            win = false;
         }
     }
 

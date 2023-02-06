@@ -20,8 +20,8 @@ MonoBehaviour:
   cellElementCategory: 1
   conditionToPlaceElement: 1
   secondaryConditionToPlaceElement: 3
-  waterCost: 1
-  energyCost: 1
+  waterCost: 4
+  energyCost: 10
   hp: 100
   damagePerTurn: 1
   damageArea: 2
